@@ -14,6 +14,7 @@ public interface MovieSearch{
     @GET("search/movie")
     Call<TopRatedMovies>getTopRatedMovies(
             @Query("api_key") String apiKey,
-            @Query("query")String query
+            @Query("query")String query,
+            @Query("page")int pageindex
     );
 }

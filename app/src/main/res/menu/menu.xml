@@ -9,7 +9,7 @@
         android:title="Search"
         app:showAsAction="collapseActionView"
         android:icon="@drawable/ic_search_black_24dp"
-        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:actionViewClass="android.widget.SearchView"
         />
 
 </menu>

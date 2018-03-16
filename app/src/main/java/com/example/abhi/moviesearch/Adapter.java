@@ -28,6 +28,7 @@ import java.util.List;
 public class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int item = 0;
+    private static final int noint =-1;
     private static final int loading = 1;
     private static final String base_url_img="https://image.tmdb.org/t/p/w150/";
     private List<Result> movieResults;
@@ -55,6 +56,7 @@ public class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 View v2 =inflater.inflate(R.layout.progressitem,parent,false);
                 viewHolder=new LoadingVH(v2);
                 break;
+
 
         }
         return viewHolder;
@@ -96,7 +98,7 @@ public class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         .into(movieVH.mPosterImg);
                 break;
             case loading:
-                //do nothing
+
                 break;
         }
 

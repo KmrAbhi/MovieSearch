@@ -16,6 +16,7 @@ public abstract class ScrollListener extends RecyclerView.OnScrollListener{
         int visibleItemCount=layoutManager.getChildCount();
         int totalItemCount = layoutManager.getItemCount();
         int firstVisibleItemPosition =layoutManager.findFirstVisibleItemPosition();
+        if(getIsOnMain()==true){
         if(!isLoading()&&!isLastPage()){
             if((visibleItemCount+firstVisibleItemPosition)>=totalItemCount&&
                     firstVisibleItemPosition>=0&&
@@ -24,9 +25,21 @@ public abstract class ScrollListener extends RecyclerView.OnScrollListener{
             }
         }
     }
+    else{
+        if(!isLoadingSearch()&&!isLastPageSearch()){
+            if((visibleItemCount+firstVisibleItemPosition)>=totalItemCount&&
+                    firstVisibleItemPosition>=0&&
+                    totalItemCount>=getTotalSearchPageCount()){
+                loadMoreItems();
+            }  }
+    }}
     protected abstract void loadMoreItems();
     public abstract int getTotalPageCount();
+    public abstract int getTotalSearchPageCount();
     public abstract boolean isLastPage();
+    public abstract boolean isLastPageSearch();
     public abstract boolean isLoading();
+    public abstract boolean isLoadingSearch();
+    public abstract boolean getIsOnMain();
 
 }
