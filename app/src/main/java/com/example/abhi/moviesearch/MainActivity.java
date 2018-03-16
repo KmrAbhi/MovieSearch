@@ -229,7 +229,6 @@ else {
 
 
     private void loadFirstSearchPage(String query){
-        Toast.makeText(this, "fired", Toast.LENGTH_SHORT).show();
 
         callSearchedMoviesApi(query).enqueue(new Callback<TopRatedMovies>() {
             @Override
