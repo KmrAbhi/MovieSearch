@@ -11,6 +11,7 @@ import java.util.List;
  */
 
 public class Result {
+
     @SerializedName("poster_path")
     @Expose
     private String posterPath;
@@ -69,6 +70,8 @@ public class Result {
     public void setTitle(String title) {
         this.title = title;
     }
+
+
 
 
 

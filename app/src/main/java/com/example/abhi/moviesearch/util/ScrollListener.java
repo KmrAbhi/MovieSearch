@@ -1,6 +1,7 @@
 package com.example.abhi.moviesearch.util;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 /**
  * Created by abhi on 14/3/18.
@@ -19,8 +20,7 @@ public abstract class ScrollListener extends RecyclerView.OnScrollListener{
         if(getIsOnMain()==true){
         if(!isLoading()&&!isLastPage()){
             if((visibleItemCount+firstVisibleItemPosition)>=totalItemCount&&
-                    firstVisibleItemPosition>=0&&
-                    totalItemCount>=getTotalPageCount()){
+                    firstVisibleItemPosition>=0){
                 loadMoreItems();
             }
         }

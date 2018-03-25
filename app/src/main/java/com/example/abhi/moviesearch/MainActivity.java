@@ -18,8 +18,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.example.abhi.moviesearch.Presenter.fetchMovies;
-import com.example.abhi.moviesearch.Presenter.getMovies;
+import com.example.abhi.moviesearch.Presenter.getMoviesImplem;
 import com.example.abhi.moviesearch.model.Result;
 import com.example.abhi.moviesearch.util.ScrollListener;
 
@@ -39,12 +38,12 @@ public class MainActivity extends AppCompatActivity implements mvpView {
     private boolean isLastPage = false;
     private boolean isLoadingSearch =false;
     private boolean isLastPageSearch = false;
-    private int TOTAL_PAGES=20;
-    private int TOTAL_PAGES_SEARCH=20;//restricting to 20 pages
+    private int TOTAL_PAGES;
+    private int TOTAL_PAGES_SEARCH;//restricting to 20 pages
     private int currentPage = PAGE_START;
     private int currentPageSearch=PAGE_START;
     private String query;
-    private getMovies getmovies;
+    private getMoviesImplem getmovies;
 
 
 
@@ -53,9 +52,8 @@ public class MainActivity extends AppCompatActivity implements mvpView {
         ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-        Log.e("is connected",Boolean.toString(isConnected));
         super.onCreate(savedInstanceState);
-        getmovies=new getMovies(this);
+        getmovies=new getMoviesImplem(this);
         if (isConnected){
         setContentView(R.layout.activity_main);
             rv = (RecyclerView) findViewById(R.id.main_recycle_view);
@@ -69,7 +67,6 @@ public class MainActivity extends AppCompatActivity implements mvpView {
                 rv.addOnScrollListener(new ScrollListener(linearLayoutManager) {
                 @Override
                 protected void loadMoreItems() {
-                    Log.d("knock knock","calm down");
                     if (isOnMain == true) {
                         isLoading = true;
                         currentPage += 1;
@@ -177,12 +174,12 @@ else {
         }
     }
     @Override
-    public void updateUi(List<Result> results) {
+    public void updateUi(List<Result> results,int totalPages) {
         if(isLoading==false) {
+            TOTAL_PAGES = totalPages;
             progressBar.setVisibility(View.GONE);
             adapter.addAll(results);
             if (currentPage <= TOTAL_PAGES){
-                Log.d("ye to chal raha hai","yay");
                 adapter.addLoadingFooter();}
             else
                 isLastPage = true;
@@ -191,18 +188,16 @@ else {
             adapter.removeLoadingFooter();
             isLoading = false;
             adapter.addAll(results);
-            if (currentPage != TOTAL_PAGES) {
-                Log.d("current",Integer.toString(currentPage));
+            if (currentPage != TOTAL_PAGES)
                 adapter.addLoadingFooter();
-
-            }
             else
                 isLastPage = true;
         }
     }
     @Override
-    public void updateUiSearch(List<Result> results) {
+    public void updateUiSearch(List<Result> results,int totalPagesSearch) {
         if(isLoadingSearch==false) {
+            TOTAL_PAGES_SEARCH=totalPagesSearch;
             adapter_search = new Adapter(MainActivity.this);
             adapter_search.addAll(results);
             rv.setAdapter(adapter_search);

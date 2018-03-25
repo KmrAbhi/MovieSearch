@@ -9,8 +9,8 @@ import java.util.List;
  */
 
 public interface mvpView {
-    void updateUi(List<Result> results);
-    void updateUiSearch(List<Result> results);
+    void updateUi(List<Result> results,int totalPages);
+    void updateUiSearch(List<Result> results,int totalPagesSearch);
     int getCurrentPage();
     int getCurrentPageSearch();
 }
