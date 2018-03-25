@@ -17,13 +17,16 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import com.example.abhi.moviesearch.Presenter.fetchMovies;
 import com.example.abhi.moviesearch.Presenter.getMovies;
 import com.example.abhi.moviesearch.model.Result;
 import com.example.abhi.moviesearch.util.ScrollListener;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements mpvView{
+
+public class MainActivity extends AppCompatActivity implements mvpView {
 
     private static final String TAG = "MainActivity";
     private static final int PAGE_START = 1;
@@ -64,9 +67,9 @@ public class MainActivity extends AppCompatActivity implements mpvView{
             rv.setAdapter(adapter);
 
                 rv.addOnScrollListener(new ScrollListener(linearLayoutManager) {
-
                 @Override
                 protected void loadMoreItems() {
+                    Log.d("knock knock","calm down");
                     if (isOnMain == true) {
                         isLoading = true;
                         currentPage += 1;
@@ -173,13 +176,14 @@ else {
             finish();
         }
     }
-
+    @Override
     public void updateUi(List<Result> results) {
         if(isLoading==false) {
             progressBar.setVisibility(View.GONE);
             adapter.addAll(results);
-            if (currentPage <= TOTAL_PAGES)
-                adapter.addLoadingFooter();
+            if (currentPage <= TOTAL_PAGES){
+                Log.d("ye to chal raha hai","yay");
+                adapter.addLoadingFooter();}
             else
                 isLastPage = true;
         }
@@ -187,12 +191,16 @@ else {
             adapter.removeLoadingFooter();
             isLoading = false;
             adapter.addAll(results);
-            if (currentPage != TOTAL_PAGES)
+            if (currentPage != TOTAL_PAGES) {
+                Log.d("current",Integer.toString(currentPage));
                 adapter.addLoadingFooter();
+
+            }
             else
                 isLastPage = true;
         }
     }
+    @Override
     public void updateUiSearch(List<Result> results) {
         if(isLoadingSearch==false) {
             adapter_search = new Adapter(MainActivity.this);
@@ -218,10 +226,11 @@ else {
         }
     }
 
-
+@Override
 public int getCurrentPage(){
         return currentPage;
 }
+@Override
 public int getCurrentPageSearch(){
     return currentPageSearch;
 }

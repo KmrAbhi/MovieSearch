@@ -1,14 +1,15 @@
 package com.example.abhi.moviesearch.Presenter;
 
 
+import android.util.Log;
+
 import com.example.abhi.moviesearch.API.MovieApi;
 import com.example.abhi.moviesearch.API.MovieSearch;
 import com.example.abhi.moviesearch.API.MovieService;
 import com.example.abhi.moviesearch.MainActivity;
-import com.example.abhi.moviesearch.R;
 import com.example.abhi.moviesearch.model.Result;
 import com.example.abhi.moviesearch.model.TopRatedMovies;
-import com.example.abhi.moviesearch.mpvView;
+import com.example.abhi.moviesearch.mvpView;
 
 import java.util.List;
 
@@ -23,22 +24,22 @@ import retrofit2.Response;
  * Created by abhi on 24/3/18.
  */
 
-public class getMovies<V extends mpvView>  implements fetchMovies  {
+public class getMovies<V extends mvpView>  implements fetchMovies  {
     private final String str = "62d66706efe1d38f0a4dfd8dc32c1f0a";
     private MovieService movieservice = MovieApi.getClient().create(MovieService.class);
     private MovieSearch moviesearch = MovieApi.getClient().create(MovieSearch.class);
-    private MainActivity mainActivity;
-    public getMovies(MainActivity mainactivity){
-        mainActivity = mainactivity;
+    private mvpView mvpview;
+    public getMovies(mvpView mvpView){
+        mvpview = mvpView;
     }
 
-
+    @Override
     public void loadPage () {
             callMovieApi().enqueue(new Callback<TopRatedMovies>() {
                 @Override
                 public void onResponse(Call<TopRatedMovies> call, Response<TopRatedMovies> response) {
                List<Result> results = fetchResults(response);
-                mainActivity.updateUi(results);
+                mvpview.updateUi(results);
                 }
 
                 @Override
@@ -51,13 +52,13 @@ public class getMovies<V extends mpvView>  implements fetchMovies  {
         }
 
 
-
+    @Override
     public void loadSearchPage(String Query) {
         callSearchMovieApi(Query).enqueue(new Callback<TopRatedMovies>() {
             @Override
             public void onResponse(Call<TopRatedMovies> call, Response<TopRatedMovies> response) {
                 List<Result> results = fetchResults(response);
-                mainActivity.updateUiSearch(results);
+                mvpview.updateUiSearch(results);
             }
 
             @Override
@@ -71,13 +72,13 @@ public class getMovies<V extends mpvView>  implements fetchMovies  {
 
 
     public retrofit2.Call<TopRatedMovies> callMovieApi() {
-        int current_page = mainActivity.getCurrentPage();
+        int current_page = mvpview.getCurrentPage();
         return movieservice.getTopRatedMovies(str, "en_us", current_page);
 
     }
 
     public retrofit2.Call<TopRatedMovies> callSearchMovieApi(String Query) {
-        int currentSearchPage =mainActivity.getCurrentPageSearch();
+        int currentSearchPage =mvpview.getCurrentPageSearch();
         return moviesearch.getTopRatedMovies(str, Query, currentSearchPage);
     }
 
